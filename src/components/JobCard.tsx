@@ -1,68 +1,82 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity } from "react-native";
 import { Job } from "../hooks/useFetchJobs";
 import globalStyles from "../styles/globalstyles";
 
 interface JobCardProps {
   job: Job;
+  onSaveJob?: (job: Job) => void;
+  navigation?: any;
 }
 
-const JobCard: React.FC<JobCardProps> = ({ job }) => {
+const JobCard: React.FC<JobCardProps> = ({ job, onSaveJob, navigation }) => {
+  const [isSaved, setIsSaved] = useState(false);
+
+  const handleSaveJob = () => {
+    if (!isSaved && onSaveJob) {
+      setIsSaved(true);
+      onSaveJob(job);
+    }
+  };
+
+  const handleApply = () => {
+    if (navigation) {
+      navigation.navigate("ApplicationForm", { job });
+    }
+  };
+
   return (
     <View style={globalStyles.card}>
       <Text style={globalStyles.title}>{job.title}</Text>
-      
+
       {job.company && (
         <Text style={globalStyles.company}>
-          <Text style={styles.label}>Company: </Text>
+          <Text style={globalStyles.label}>Company: </Text>
           {job.company}
         </Text>
       )}
-      
+
       {job.location && (
         <Text style={globalStyles.location}>
-          <Text style={styles.label}>Location: </Text>
+          <Text style={globalStyles.label}>Location: </Text>
           {job.location}
         </Text>
       )}
-      
+
       {job.salary && (
         <Text style={globalStyles.salary}>
-          <Text style={styles.label}>Salary: </Text>
+          <Text style={globalStyles.label}>Salary: </Text>
           {job.salary}
         </Text>
       )}
-      
+
       {job.jobType && (
-        <Text style={styles.jobType}>
-          <Text style={styles.label}>Type: </Text>
+        <Text style={globalStyles.jobType}>
+          <Text style={globalStyles.label}>Type: </Text>
           {job.jobType}
         </Text>
       )}
-      
-      {job.description && (
-        <View style={styles.descriptionContainer}>
-          <Text style={styles.label}>Description:</Text>
-          <Text style={globalStyles.description}>{job.description}</Text>
-        </View>
-      )}
+
+      <View style={globalStyles.buttonContainer}>
+        <TouchableOpacity
+          style={isSaved ? globalStyles.savedButton : globalStyles.saveButton}
+          onPress={handleSaveJob}
+          disabled={isSaved}
+        >
+          <Text style={isSaved ? globalStyles.savedButtonText : globalStyles.buttonText}>
+            {isSaved ? "Saved" : "Save Job"}
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity 
+          style={globalStyles.applyButton}
+          onPress={handleApply}
+        >
+          <Text style={globalStyles.buttonText}>Apply</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  label: {
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  jobType: {
-    fontSize: 14,
-    color: '#28a745',
-    fontWeight: '500',
-  },
-  descriptionContainer: {
-    marginTop: 8,
-  }
-});
 
 export default JobCard;
