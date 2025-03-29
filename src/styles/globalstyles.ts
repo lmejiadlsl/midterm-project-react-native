@@ -82,35 +82,40 @@ const globalStyles = StyleSheet.create({
   applyButton: {
     backgroundColor: "#007bff",
     paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
     borderRadius: 5,
     alignItems: "center",
+    justifyContent: "center",
     width: "48%", 
+    height: 45, // Fixed height for both buttons
   },
   
   saveButton: {
     backgroundColor: "#007bff",
     paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
     borderRadius: 5,
     alignItems: "center",
-    width: "48%", // Same width as apply button for consistency
+    justifyContent: "center",
+    width: "48%",
+    height: 45, // Fixed height for both buttons
   },
   
   savedButton: {
     backgroundColor: "#28a745",
     paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
     borderRadius: 5,
     alignItems: "center",
-    width: "48%", // Keeps the button width fixed when saved
+    justifyContent: "center",
+    width: "48%",
+    height: 45, // Fixed height for both buttons
   },
   
   buttonText: {
     color: "white",
     fontWeight: "bold",
   },
-  
   
   savedButtonText: {
     color: "white",
@@ -152,6 +157,22 @@ const globalStyles = StyleSheet.create({
     textAlign: "center",
     color: "#777",
     marginTop: 20,
+  },
+
+  removeButton: {
+    backgroundColor: "#dc3545",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    width: "48%",
+    height: 45, // Fixed height for both buttons
+  },
+  removeButtonText: {
+    color: 'white',
+    marginLeft: 5,
+    fontWeight: 'bold',
   },
 });
 

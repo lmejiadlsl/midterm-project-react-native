@@ -1,28 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Job } from "../hooks/useFetchJobs";
 import globalStyles from "../styles/globalstyles";
 import { Ionicons } from "@expo/vector-icons";
+import { useSavedJobs } from "../context/SavedJobsContext";
 
 interface JobCardProps {
   job: Job;
-  onSaveJob: (job: Job) => void;
-  savedJobs: Job[];
   navigation?: any;
+  savedJobScreen?: boolean;
 }
 
-const JobCard: React.FC<JobCardProps> = ({ job, onSaveJob, savedJobs, navigation }) => {
-  const [isSaved, setIsSaved] = useState(false);
-
-  useEffect(() => {
-    // Check if the job is already in savedJobs
-    setIsSaved(savedJobs.some((savedJob) => savedJob.id === job.id));
-  }, [savedJobs]);
+const JobCard: React.FC<JobCardProps> = ({ 
+  job, 
+  navigation, 
+  savedJobScreen = false 
+}) => {
+  const { savedJobs, addSavedJob, removeSavedJob } = useSavedJobs();
+  
+  const isSaved = savedJobs.some((savedJob) => savedJob.id === job.id);
 
   const handleSaveJob = () => {
     if (!isSaved) {
-      onSaveJob(job);
+      addSavedJob(job);
     }
+  };
+
+  const handleRemoveJob = () => {
+    removeSavedJob(job.id);
   };
 
   const handleApply = () => {
@@ -70,16 +75,33 @@ const JobCard: React.FC<JobCardProps> = ({ job, onSaveJob, savedJobs, navigation
           <Text style={globalStyles.buttonText}>Apply</Text>
         </TouchableOpacity>
 
-        {/* Save Job Button */}
         <TouchableOpacity 
-          style={isSaved ? globalStyles.savedButton : globalStyles.saveButton}
-          onPress={handleSaveJob}
-          disabled={isSaved}
+          style={savedJobScreen 
+            ? globalStyles.removeButton 
+            : (isSaved ? globalStyles.savedButton : globalStyles.saveButton)
+          }
+          onPress={savedJobScreen ? handleRemoveJob : handleSaveJob}
+          disabled={!savedJobScreen && isSaved}
         >
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Ionicons name={isSaved ? "bookmark" : "bookmark-outline"} size={18} color="white" />
-            <Text style={isSaved ? globalStyles.savedButtonText : globalStyles.buttonText}>
-              {isSaved ? "Saved" : "Save Job"}
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+            <Ionicons 
+              name={savedJobScreen 
+                ? "trash-outline" 
+                : (isSaved ? "bookmark" : "bookmark-outline")
+              } 
+              size={18} 
+              color="white" 
+            />
+            <Text style={[
+              savedJobScreen 
+                ? globalStyles.removeButtonText 
+                : (isSaved ? globalStyles.savedButtonText : globalStyles.buttonText),
+              { marginLeft: 5 }
+            ]}>
+              {savedJobScreen 
+                ? "Remove" 
+                : (isSaved ? "Saved" : "Save")
+              }
             </Text>
           </View>
         </TouchableOpacity>
