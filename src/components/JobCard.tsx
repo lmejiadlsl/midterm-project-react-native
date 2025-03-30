@@ -12,6 +12,7 @@ import { RootStackParamList } from '../types/navigation';
 interface JobCardProps {
   job: Job;
   savedJobScreen?: boolean;
+  onPress?: () => void;
 }
 
 // Define valid icon names as a type

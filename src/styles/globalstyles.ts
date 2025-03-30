@@ -1,4 +1,3 @@
-// src/styles/globalstyles.ts
 import { StyleSheet } from "react-native";
 import { ThemeColors } from "../context/ThemeContext";
 

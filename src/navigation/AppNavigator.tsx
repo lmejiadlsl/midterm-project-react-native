@@ -7,6 +7,7 @@ import JobFinderScreen from "../screens/JobFinderScreen";
 import SavedJobsScreen from "../screens/SavedJobsScreen";
 import ApplicationForm from "../screens/ApplicationForm";
 import { RootStackParamList } from "../types/navigation";
+import { useTheme } from "../context/ThemeContext";
 
 const Stack = createStackNavigator<RootStackParamList>();
 const Drawer = createDrawerNavigator();
@@ -21,6 +22,19 @@ const JobStack = () => (
     />
   </Stack.Navigator>
 );
+
+// Add a new SavedJobsStack to include the ApplicationForm
+const SavedJobsStack = () => (
+  <Stack.Navigator initialRouteName="Saved Jobs" screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="Saved Jobs" component={SavedJobsScreen} />
+    <Stack.Screen 
+      name="ApplicationForm" 
+      component={ApplicationForm}
+      options={{ title: "Application Form" }}
+    />
+  </Stack.Navigator>
+);
+
 
 export default function AppNavigator() {
   return (
@@ -37,7 +51,7 @@ export default function AppNavigator() {
         />
         <Drawer.Screen 
           name="Saved Jobs" 
-          component={SavedJobsScreen}
+          component={SavedJobsStack} // Use the stack instead of direct component
           options={{
             drawerIcon: ({ color, size }) => (
               <Ionicons name="bookmark-outline" size={size} color={color} />

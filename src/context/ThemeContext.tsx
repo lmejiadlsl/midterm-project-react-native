@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { Appearance } from 'react-native';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { Appearance } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export type ThemeColors = {
   background: string;
@@ -13,7 +14,7 @@ export type ThemeColors = {
   shadow: string;
   inputBackground: string;
   border: string;
-  disabled: string; // Added disabled color
+  disabled: string;
 };
 
 export type Theme = {
@@ -28,45 +29,60 @@ type ThemeContextType = {
 
 const lightTheme: Theme = {
   colors: {
-    background: '#f8f9fa',
-    cardBackground: '#ffffff',
-    text: '#000000',
-    textSecondary: '#555555',
-    textOnPrimary: '#ffffff',
-    primary: '#007bff',
-    success: '#28a745',
-    error: '#dc3545',
-    shadow: '#000000',
-    inputBackground: '#ffffff',
-    border: '#cccccc',
-    disabled: '#bdc3c7', // Light gray for disabled state
+    background: "#f8f9fa",
+    cardBackground: "#ffffff",
+    text: "#000000",
+    textSecondary: "#555555",
+    textOnPrimary: "#ffffff",
+    primary: "#007bff",
+    success: "#28a745",
+    error: "#dc3545",
+    shadow: "#000000",
+    inputBackground: "#ffffff",
+    border: "#cccccc",
+    disabled: "#bdc3c7",
   },
 };
 
 const darkTheme: Theme = {
   colors: {
-    background: '#121212',
-    cardBackground: '#1e1e1e',
-    text: '#ffffff',
-    textSecondary: '#aaaaaa',
-    textOnPrimary: '#ffffff',
-    primary: '#1a73e8',
-    success: '#34a853',
-    error: '#d93025',
-    shadow: '#ffffff',
-    inputBackground: '#2d2d2d',
-    border: '#444444',
-    disabled: '#7f8c8d', // Dark gray for disabled state
+    background: "#121212",
+    cardBackground: "#1e1e1e",
+    text: "#ffffff",
+    textSecondary: "#aaaaaa",
+    textOnPrimary: "#ffffff",
+    primary: "#1a73e8",
+    success: "#34a853",
+    error: "#d93025",
+    shadow: "#ffffff",
+    inputBackground: "#2d2d2d",
+    border: "#444444",
+    disabled: "#7f8c8d",
   },
 };
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const colorScheme = Appearance.getColorScheme();
-  const [isDark, setIsDark] = useState(colorScheme === 'dark');
+  const [isDark, setIsDark] = useState(false);
 
-  const toggleTheme = () => setIsDark(!isDark);
+  useEffect(() => {
+    const loadTheme = async () => {
+      const storedTheme = await AsyncStorage.getItem("theme");
+      if (storedTheme !== null) {
+        setIsDark(storedTheme === "dark");
+      } else {
+        setIsDark(Appearance.getColorScheme() === "dark");
+      }
+    };
+    loadTheme();
+  }, []);
+
+  const toggleTheme = async () => {
+    const newTheme = !isDark;
+    setIsDark(newTheme);
+    await AsyncStorage.setItem("theme", newTheme ? "dark" : "light");
+  };
 
   const theme = isDark ? darkTheme : lightTheme;
 
@@ -80,7 +96,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 export const useTheme = () => {
   const context = useContext(ThemeContext);
   if (context === undefined) {
-    throw new Error('useTheme must be used within a ThemeProvider');
+    throw new Error("useTheme must be used within a ThemeProvider");
   }
   return context;
 };

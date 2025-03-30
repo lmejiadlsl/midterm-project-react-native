@@ -48,7 +48,6 @@ const JobFinderScreen = ({ navigation }: { navigation: any }) => {
           renderItem={({ item }) => (
             <JobCard 
   job={item}  
-  navigation={navigation} 
 />
           )}
         />

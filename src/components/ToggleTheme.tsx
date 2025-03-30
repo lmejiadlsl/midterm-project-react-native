@@ -1,4 +1,3 @@
-// components/ToggleTheme.tsx
 import React from 'react';
 import { Switch, View, StyleSheet } from 'react-native';
 import { useTheme } from '../context/ThemeContext';

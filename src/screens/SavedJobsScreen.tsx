@@ -2,11 +2,15 @@ import React from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
 import { useSavedJobs } from "../context/SavedJobsContext";
 import JobCard from "../components/JobCard";
-import { useTheme } from "../context/ThemeContext"; // Add this import
+import { useTheme } from "../context/ThemeContext";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../types/navigation";
 
-const SavedJobsScreen = () => { // Remove navigation prop
+const SavedJobsScreen = () => {
   const { savedJobs } = useSavedJobs();
-  const { theme } = useTheme(); // Get theme
+  const { theme } = useTheme();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   if (savedJobs.length === 0) {
     return (
@@ -28,7 +32,7 @@ const SavedJobsScreen = () => { // Remove navigation prop
         renderItem={({ item }) => (
           <JobCard 
             job={item} 
-            savedJobScreen={true} // Only pass props defined in JobCardProps
+            onPress={() => navigation.navigate("ApplicationForm", { job: item, fromSavedJobs: true })}
           />
         )}
       />
@@ -36,7 +40,6 @@ const SavedJobsScreen = () => { // Remove navigation prop
   );
 };
 
-// Keep your existing StyleSheet but remove hardcoded colors
 const styles = StyleSheet.create({
   container: {
     flex: 1,
