@@ -1,11 +1,13 @@
+// src/styles/globalstyles.ts
 import { StyleSheet } from "react-native";
+import { ThemeColors } from "../context/ThemeContext";
 
-const globalStyles = StyleSheet.create({
+export const createGlobalStyles = (colors: ThemeColors) => StyleSheet.create({
   // General Styles
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#c5eaea",
+    backgroundColor: colors.background,
   },
   center: {
     flex: 1,
@@ -14,7 +16,7 @@ const globalStyles = StyleSheet.create({
   },
   safeArea: {
     flex: 1,
-    backgroundColor: "#f8f9fa",
+    backgroundColor: colors.background,
   },
 
   // Header Styles
@@ -22,22 +24,22 @@ const globalStyles = StyleSheet.create({
     paddingTop: 50,
     paddingBottom: 10,
     alignItems: "center",
-    backgroundColor: "#007bff",
+    backgroundColor: colors.primary,
   },
   headerTitle: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#fff",
+    color: colors.textOnPrimary,
   },
 
   // Card Styles
   card: {
     padding: 16,
     marginVertical: 8,
-    backgroundColor: "#93f9f9",
+    backgroundColor: colors.cardBackground,
     borderRadius: 8,
     elevation: 3,
-    shadowColor: "#000",
+    shadowColor: colors.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -47,31 +49,31 @@ const globalStyles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: "bold",
+    color: colors.text,
   },
   company: {
     fontSize: 16,
-    color: "#555",
+    color: colors.textSecondary,
   },
   location: {
     fontSize: 14,
-    color: "#777",
+    color: colors.textSecondary,
   },
   salary: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#007bff",
+    color: colors.primary,
   },
   jobType: {
     fontSize: 14,
-    color: "#28a745",
+    color: colors.success,
     fontWeight: "500",
   },
   label: {
     fontWeight: "bold",
-    color: "#333",
+    color: colors.text,
   },
 
- 
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -80,45 +82,45 @@ const globalStyles = StyleSheet.create({
   },
   
   applyButton: {
-    backgroundColor: "#007bff",
+    backgroundColor: colors.primary,
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",
     width: "48%", 
-    height: 45, // Fixed height for both buttons
+    height: 45,
   },
   
   saveButton: {
-    backgroundColor: "#007bff",
+    backgroundColor: colors.primary,
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",
     width: "48%",
-    height: 45, // Fixed height for both buttons
+    height: 45,
   },
   
   savedButton: {
-    backgroundColor: "#28a745",
+    backgroundColor: colors.success,
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",
     width: "48%",
-    height: 45, // Fixed height for both buttons
+    height: 45,
   },
   
   buttonText: {
-    color: "white",
+    color: colors.textOnPrimary,
     fontWeight: "bold",
   },
   
   savedButtonText: {
-    color: "white",
+    color: colors.textOnPrimary,
     fontWeight: "bold",
   },
 
@@ -126,12 +128,12 @@ const globalStyles = StyleSheet.create({
   searchContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "white",
+    backgroundColor: colors.inputBackground,
     borderRadius: 10,
     paddingHorizontal: 10,
     paddingVertical: 8,
     marginVertical: 10,
-    shadowColor: "#000",
+    shadowColor: colors.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -139,15 +141,16 @@ const globalStyles = StyleSheet.create({
   },
   searchIcon: {
     marginRight: 8,
+    color: colors.textSecondary,
   },
   searchInput: {
     flex: 1,
     fontSize: 16,
-    color: "black",
+    color: colors.text,
   },
 
   errorText: {
-    color: "red",
+    color: colors.error,
     fontSize: 16,
     textAlign: "center",
     marginTop: 10,
@@ -155,25 +158,41 @@ const globalStyles = StyleSheet.create({
   noJobsText: {
     fontSize: 16,
     textAlign: "center",
-    color: "#777",
+    color: colors.textSecondary,
     marginTop: 20,
   },
 
   removeButton: {
-    backgroundColor: "#dc3545",
+    backgroundColor: colors.error,
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",
     width: "48%",
-    height: 45, // Fixed height for both buttons
+    height: 45,
   },
   removeButtonText: {
-    color: 'white',
+    color: colors.textOnPrimary,
     marginLeft: 5,
     fontWeight: 'bold',
   },
 });
 
-export default globalStyles;
+// Default export with light theme colors for backward compatibility
+const defaultColors: ThemeColors = {
+  background: "#f8f9fa",
+  cardBackground: "#93f9f9",
+  text: "#000000",
+  textSecondary: "#555555",
+  textOnPrimary: "#ffffff",
+  primary: "#007bff",
+  success: "#28a745",
+  error: "#dc3545",
+  shadow: "#000000",
+  inputBackground: "#ffffff",
+  border: "#cccccc",
+  disabled: "#bdc3c7", // Add this line
+};
+
+export default createGlobalStyles(defaultColors);
