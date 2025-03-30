@@ -28,38 +28,38 @@ type ThemeContextType = {
 };
 
 const lightTheme: Theme = {
-  colors: {
-    background: "#f8f9fa",
-    cardBackground: "#ffffff",
-    text: "#000000",
-    textSecondary: "#555555",
-    textOnPrimary: "#ffffff",
-    primary: "#007bff",
-    success: "#28a745",
-    error: "#dc3545",
-    shadow: "#000000",
-    inputBackground: "#ffffff",
-    border: "#cccccc",
-    disabled: "#bdc3c7",
-  },
-};
-
-const darkTheme: Theme = {
-  colors: {
-    background: "#121212",
-    cardBackground: "#1e1e1e",
-    text: "#ffffff",
-    textSecondary: "#aaaaaa",
-    textOnPrimary: "#ffffff",
-    primary: "#1a73e8",
-    success: "#34a853",
-    error: "#d93025",
-    shadow: "#ffffff",
-    inputBackground: "#2d2d2d",
-    border: "#444444",
-    disabled: "#7f8c8d",
-  },
-};
+    colors: {
+      background: "#f8f9fa",
+      cardBackground: "#ffffff",
+      text: "#000000",
+      textSecondary: "#555555",
+      textOnPrimary: "#ffffff",
+      primary: "#007bff",
+      success: "#28a745",
+      error: "#dc3545",
+      shadow: "#000000",
+      inputBackground: "#ffffff",
+      border: "#cccccc",
+      disabled: "#bdc3c7",
+    },
+  };
+  
+  const darkTheme: Theme = {
+      colors: {
+        background: "#121212",
+        cardBackground: "#1e1e1e",
+        text: "#ffffff",
+        textSecondary: "#aaaaaa",
+        textOnPrimary: "#ffffff",
+        primary: "#1a73e8",
+        success: "#34a853",
+        error: "#d93025",
+        shadow: "#ffffff",
+        inputBackground: "#2d2d2d", // Adjust this to be lighter for better contrast
+        border: "#444444",
+        disabled: "#7f8c8d",
+      },
+    };
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 

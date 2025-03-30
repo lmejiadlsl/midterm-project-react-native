@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
-import globalStyles from "./src/styles/globalstyles";
+import { createGlobalStyles } from "./src/styles/globalstyles";
 import AppNavigator from "./src/navigation/AppNavigator";
 import { SavedJobsProvider } from "./src/context/SavedJobsContext";
 import { ThemeProvider } from "./src/context/ThemeContext";
@@ -10,7 +10,7 @@ export default function App() {
   return (
     <ThemeProvider>
       <SavedJobsProvider>
-        <SafeAreaView style={globalStyles.safeArea}>
+        <SafeAreaView style={{ flex: 1 }}>
           <StatusBar style="auto" />
           <AppNavigator /> 
         </SafeAreaView>

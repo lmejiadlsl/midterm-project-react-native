@@ -1,6 +1,6 @@
 import React from "react";
-import { TextInput, View } from "react-native";
-import globalStyles from "../styles/globalstyles";
+import { TextInput, View, StyleSheet } from "react-native";
+import { useTheme } from "../context/ThemeContext";
 import Ionicons from "react-native-vector-icons/Ionicons"; 
 
 type SearchBarProps = {
@@ -9,18 +9,44 @@ type SearchBarProps = {
 };
 
 const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, setSearchQuery}) => {
+    const { theme } = useTheme();
+    
     return (
-        <View style={globalStyles.searchContainer}>
-            <Ionicons name="search" size={20} color="gray" style={globalStyles.searchIcon} />
-            <TextInput
-            style={globalStyles.searchInput}
-            placeholder="Search for jobs..."
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            autoCapitalize="none"
+        <View style={[styles.searchContainer, { backgroundColor: theme.colors.inputBackground }]}>
+            <Ionicons 
+                name="search" 
+                size={20} 
+                color={theme.colors.textSecondary} 
+                style={styles.searchIcon} 
             />
-            </View>
+            <TextInput
+                style={[styles.searchInput, { color: theme.colors.text }]}
+                placeholder="Search for jobs..."
+                placeholderTextColor={theme.colors.textSecondary}
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                autoCapitalize="none"
+            />
+        </View>
     );
 };
+
+const styles = StyleSheet.create({
+    searchContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        borderRadius: 10,
+        paddingHorizontal: 10,
+        paddingVertical: 8,
+        marginVertical: 10,
+    },
+    searchIcon: {
+        marginRight: 8,
+    },
+    searchInput: {
+        flex: 1,
+        fontSize: 16,
+    },
+});
 
 export default SearchBar;

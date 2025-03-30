@@ -1,15 +1,16 @@
 import React, { useState } from "react";
-import { View, Text, FlatList, ActivityIndicator } from "react-native";
+import { View, Text, FlatList, ActivityIndicator, StyleSheet } from "react-native";
 import { useFetchJobs } from "../hooks/useFetchJobs";
 import JobCard from "../components/JobCard";
 import SearchBar from "../components/SearchBar";
-import globalStyles from "../styles/globalstyles";
 import { useSavedJobs } from "../context/SavedJobsContext";
+import { useTheme } from "../context/ThemeContext";
 
 const JobFinderScreen = ({ navigation }: { navigation: any }) => {
   const { jobs, loading, error } = useFetchJobs();
   const [searchQuery, setSearchQuery] = useState("");
   const { savedJobs, addSavedJob } = useSavedJobs();
+  const { theme } = useTheme();
 
   const filteredJobs = jobs.filter(
     (job) =>
@@ -20,40 +21,63 @@ const JobFinderScreen = ({ navigation }: { navigation: any }) => {
 
   if (loading) {
     return (
-      <View style={globalStyles.center}>
-        <ActivityIndicator size="large" color="#007AFF" />
-        <Text>Loading jobs...</Text>
+      <View style={[styles.center, { backgroundColor: theme.colors.background }]}>
+        <ActivityIndicator size="large" color={theme.colors.primary} />
+        <Text style={{ color: theme.colors.text }}>Loading jobs...</Text>
       </View>
     );
   }
 
   if (error) {
     return (
-      <View style={globalStyles.center}>
-        <Text style={{ color: "red" }}>Error: {error}</Text>
+      <View style={[styles.center, { backgroundColor: theme.colors.background }]}>
+        <Text style={{ color: theme.colors.error }}>Error: {error}</Text>
       </View>
     );
   }
 
   return (
-    <View style={globalStyles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
       {filteredJobs.length === 0 ? (
-        <Text>No jobs found.</Text>
+        <Text style={{ 
+          color: theme.colors.textSecondary,
+          textAlign: 'center',
+          marginTop: 20,
+        }}>
+          No jobs found.
+        </Text>
       ) : (
         <FlatList
           data={filteredJobs}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <JobCard 
-  job={item}  
-/>
+              job={item}  
+              onPress={() => navigation.navigate('ApplicationForm', { job: item })}
+            />
           )}
+          contentContainerStyle={{ 
+            paddingBottom: 20,
+            paddingHorizontal: 8,
+          }}
         />
       )}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 export default JobFinderScreen;

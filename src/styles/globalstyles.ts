@@ -194,4 +194,6 @@ const defaultColors: ThemeColors = {
   disabled: "#bdc3c7", // Add this line
 };
 
+
+
 export default createGlobalStyles(defaultColors);

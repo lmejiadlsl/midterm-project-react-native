@@ -1,5 +1,6 @@
+// InputField.tsx - Updated with proper dark mode handling
 import React from "react";
-import { TextInput, Text, View, StyleSheet } from "react-native";
+import { TextInput, Text, View, StyleSheet, TextStyle } from "react-native";
 import { useTheme } from "../context/ThemeContext";
 
 interface InputFieldProps {
@@ -10,6 +11,7 @@ interface InputFieldProps {
   keyboardType?: "default" | "email-address" | "numeric" | "phone-pad";
   multiline?: boolean;
   numberOfLines?: number;
+  labelStyle?: TextStyle;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -21,23 +23,25 @@ const InputField: React.FC<InputFieldProps> = ({
   multiline = false,
   numberOfLines = 1
 }) => {
-  const { theme } = useTheme();
+  const { theme, isDark } = useTheme();
   
   return (
     <View style={styles.container}>
-      <Text style={[styles.label, { color: theme.colors.text }]}>{label}</Text>
+     <Text style={[styles.label, { color: "#000000" }]}>{label}</Text>
       <TextInput
         style={[
           styles.input,
           multiline && styles.multiline,
           { 
             backgroundColor: theme.colors.inputBackground,
-            color: theme.colors.text
+            color: theme.colors.text,
+            borderColor: theme.colors.border
           }
         ]}
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
+        placeholderTextColor={theme.colors.textSecondary}
         keyboardType={keyboardType}
         multiline={multiline}
         numberOfLines={multiline ? numberOfLines : 1}
@@ -51,7 +55,6 @@ const styles = StyleSheet.create({
   label: { fontSize: 16, marginBottom: 8 },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
     borderRadius: 8,
     padding: 12,
     fontSize: 16,
